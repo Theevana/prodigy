@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <style>
+        /* styles.css */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        #game-board {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px auto;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+        }
+
+        .cell {
+            width: 60px;
+            height: 60px;
+            font-size: 2em;
+            margin: 5px;
+            background-color: #fff;
+            border: 2px solid #333;
+            cursor: pointer;
+        }
+
+        #reset-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #reset-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic-Tac-Toe Game</h1>
+    <p id="turn">Player X's Turn</p>
+    <div id="game-board">
+        <div class="row">
+            <button class="cell" id="cell-0"></button>
+            <button class="cell" id="cell-1"></button>
+            <button class="cell" id="cell-2"></button>
+        </div>
+        <div class="row">
+            <button class="cell" id="cell-3"></button>
+            <button class="cell" id="cell-4"></button>
+            <button class="cell" id="cell-5"></button>
+        </div>
+        <div class="row">
+            <button class="cell" id="cell-6"></button>
+            <button class="cell" id="cell-7"></button>
+            <button class="cell" id="cell-8"></button>
+        </div>
+    </div>
+    <button id="reset-button">Reset Game</button>
+    <script>
+        // script.js
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let currentPlayer = 'X';
+        let gameActive = true;
+
+        const turnDisplay = document.getElementById('turn');
+        const cells = document.querySelectorAll('.cell');
+        const resetButton = document.getElementById('reset-button');
+
+        // Function to handle cell click
+        const handleClick = (index) => {
+            if (board[index] !== '' || !gameActive) return;
+
+            board[index] = currentPlayer;
+            cells[index].textContent = currentPlayer;
+
+            if (checkWinner()) {
+                turnDisplay.textContent = `${currentPlayer} Wins!`;
+                gameActive = false;
+                return;
+            }
+
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            turnDisplay.textContent = `${currentPlayer}'s Turn`;
+        };
+
+        // Function to check if there is a winner
+        const checkWinner = () => {
+            const winningCombinations = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ];
+
+            return winningCombinations.some(combination => {
+                const [a, b, c] = combination;
+                return board[a] && board[a] === board[b] && board[a] === board[c];
+            });
+        };
+
+        // Function to reset the game
+        const resetGame = () => {
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameActive = true;
+            turnDisplay.textContent = `${currentPlayer}'s Turn`;
+
+            cells.forEach(cell => {
+                cell.textContent = '';
+            });
+        };
+
+        // Add event listeners for cells
+        cells.forEach((cell, index) => {
+            cell.addEventListener('click', () => handleClick(index));
+        });
+
+        // Add event listener for reset button
+        resetButton.addEventListener('click', resetGame);
+    </script>
+</body>
+</html>

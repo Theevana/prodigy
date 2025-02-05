@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        #app {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        input {
+            padding: 10px;
+            width: 200px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #weather-info {
+            margin-top: 20px;
+        }
+
+        .weather-detail {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Weather App</h1>
+        <div>
+            <label for="location">Enter Location:</label>
+            <input type="text" id="location" placeholder="City or Country">
+            <button id="get-weather-btn">Get Weather</button>
+        </div>
+
+        <div id="weather-info">
+            <!-- Weather data will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        const apiKey = 'YOUR_API_KEY';  // Replace with your OpenWeatherMap API Key
+        const getWeatherBtn = document.getElementById('get-weather-btn');
+        const locationInput = document.getElementById('location');
+        const weatherInfoDiv = document.getElementById('weather-info');
+
+        // Function to fetch weather data based on location
+        const fetchWeather = async (location) => {
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.cod === '404') {
+                    weatherInfoDiv.innerHTML = `<p class="weather-detail">City not found. Please try again.</p>`;
+                } else {
+                    displayWeather(data);
+                }
+            } catch (error) {
+                weatherInfoDiv.innerHTML = `<p class="weather-detail">Error fetching weather data. Please try again later.</p>`;
+            }
+        };
+
+        // Function to display weather data
+        const displayWeather = (data) => {
+            const { name, main, weather, wind } = data;
+            const temperature = main.temp;
+            const humidity = main.humidity;
+            const description = weather[0].description;
+            const windSpeed = wind.speed;
+
+            weatherInfoDiv.innerHTML = `
+                <p class="weather-detail"><strong>Location:</strong> ${name}</p>
+                <p class="weather-detail"><strong>Temperature:</strong> ${temperature}°C</p>
+                <p class="weather-detail"><strong>Humidity:</strong> ${humidity}%</p>
+                <p class="weather-detail"><strong>Description:</strong> ${description}</p>
+                <p class="weather-detail"><strong>Wind Speed:</strong> ${windSpeed} m/s</p>
+            `;
+        };
+
+        // Event listener for the button to fetch weather based on user input
+        getWeatherBtn.addEventListener('click', () => {
+            const location = locationInput.value.trim();
+
+            if (location) {
+                fetchWeather(location);
+            } else {
+                weatherInfoDiv.innerHTML = `<p class="weather-detail">Please enter a location.</p>`;
+            }
+        });
+
+        // Optionally, you can add a feature to get weather based on the user's geolocation
+        const getUserLocationWeather = async () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+                    try {
+                        const response = await fetch(url);
+                        const data = await response.json();
+                        displayWeather(data);
+                    } catch (error) {
+                        weatherInfoDiv.innerHTML = `<p class="weather-detail">Error fetching weather data. Please try again later.</p>`;
+                    }
+                });
+            } else {
+                weatherInfoDiv.innerHTML = `<p class="weather-detail">Geolocation not supported by this browser.</p>`;
+            }
+        };
+
+        // Uncomment the following line to fetch weather based on user's location when the page loads
+        // getUserLocationWeather();
+    </script>
+</body>
+</html>

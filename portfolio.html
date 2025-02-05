@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Section */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin: 0;
+        }
+
+        header p {
+            font-size: 1.2em;
+        }
+
+        .profile-photo {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            margin-top: 20px;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #34495e;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Sections */
+        section {
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        section h2 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .skills, .projects {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .skill, .project {
+            background-color: white;
+            padding: 20px;
+            margin: 10px;
+            width: 250px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .skill img, .project img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .project a {
+            display: inline-block;
+            margin-top: 10px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .project a:hover {
+            background-color: #16a085;
+        }
+
+        /* Footer Section */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Welcome to My Portfolio</h1>
+        <p>Your go-to web developer for creative and innovative solutions</p>
+        <img src="profile.jpg" alt="My Profile" class="profile-photo">
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="#about-me">About Me</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+    </nav>
+
+    <!-- About Me Section -->
+    <section id="about-me">
+        <h2>About Me</h2>
+        <p>Hello! I'm [Your Name], a passionate web developer with expertise in front-end and back-end technologies. I enjoy creating clean, efficient, and user-friendly websites. Here's a bit about my journey:</p>
+        <ul>
+            <li><strong>Background:</strong> Web developer with [X] years of experience building responsive and accessible websites.</li>
+            <li><strong>Education:</strong> Bachelor's in Computer Science from [University Name].</li>
+            <li><strong>Experience:</strong> Worked with various companies to deliver successful projects in web development and design.</li>
+        </ul>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2>Skills</h2>
+        <div class="skills">
+            <div class="skill">
+                <img src="html-logo.png" alt="HTML Logo">
+                <h3>HTML</h3>
+                <p>Building the structure of web pages with HTML5.</p>
+            </div>
+            <div class="skill">
+                <img src="css-logo.png" alt="CSS Logo">
+                <h3>CSS</h3>
+                <p>Styling web pages with CSS3 and making them responsive.</p>
+            </div>
+            <div class="skill">
+                <img src="js-logo.png" alt="JavaScript Logo">
+                <h3>JavaScript</h3>
+                <p>Making websites interactive with JavaScript.</p>
+            </div>
+            <div class="skill">
+                <img src="react-logo.png" alt="React Logo">
+                <h3>React</h3>
+                <p>Building dynamic UIs with React.js.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2>My Projects</h2>
+        <div class="projects">
+            <div class="project">
+                <img src="project1.png" alt="Project 1">
+                <h3>Project 1</h3>
+                <p>A simple weather app built with HTML, CSS, and JavaScript.</p>
+                <a href="https://github.com/yourusername/project1" target="_blank">View on GitHub</a>
+            </div>
+            <div class="project">
+                <img src="project2.png" alt="Project 2">
+                <h3>Project 2</h3>
+                <p>A personal blog built with React.js and Node.js.</p>
+                <a href="https://github.com/yourusername/project2" target="_blank">View on GitHub</a>
+            </div>
+            <div class="project">
+                <img src="project3.png" alt="Project 3">
+                <h3>Project 3</h3>
+                <p>A full-stack e-commerce site using MongoDB, Express, and React.</p>
+                <a href="https://github.com/yourusername/project3" target="_blank">View on GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 [Your Name]. All Rights Reserved.</p>
+        <p>Connect with me: <a href="mailto:your.email@example.com">your.email@example.com</a></p>
+    </footer>
+
+</body>
+</html>
+h
