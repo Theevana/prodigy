@@ -1,143 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe</title>
-    <style>
-        /* styles.css */
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-        }
+<meta charset="UTF-8">
+<title>Advanced Tic Tac Toe</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #f4f4f4;
+    }
 
-        h1 {
-            margin-top: 20px;
-        }
+    h1 { margin: 20px; }
 
-        #game-board {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 20px auto;
-        }
+    #game-board {
+        display: grid;
+        grid-template-columns: repeat(3, 80px);
+        gap: 10px;
+        justify-content: center;
+        margin: 20px auto;
+    }
 
-        .row {
-            display: flex;
-            justify-content: center;
-        }
+    .cell {
+        width: 80px;
+        height: 80px;
+        font-size: 2em;
+        border: 2px solid #333;
+        cursor: pointer;
+        background: white;
+    }
 
-        .cell {
-            width: 60px;
-            height: 60px;
-            font-size: 2em;
-            margin: 5px;
-            background-color: #fff;
-            border: 2px solid #333;
-            cursor: pointer;
-        }
+    .cell.win {
+        background: #90ee90;
+    }
 
-        #reset-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+    #status {
+        font-size: 18px;
+        margin: 10px;
+    }
 
-        #reset-button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    button {
+        padding: 10px 20px;
+        margin: 10px;
+        cursor: pointer;
+    }
+</style>
 </head>
 <body>
-    <h1>Tic-Tac-Toe Game</h1>
-    <p id="turn">Player X's Turn</p>
-    <div id="game-board">
-        <div class="row">
-            <button class="cell" id="cell-0"></button>
-            <button class="cell" id="cell-1"></button>
-            <button class="cell" id="cell-2"></button>
-        </div>
-        <div class="row">
-            <button class="cell" id="cell-3"></button>
-            <button class="cell" id="cell-4"></button>
-            <button class="cell" id="cell-5"></button>
-        </div>
-        <div class="row">
-            <button class="cell" id="cell-6"></button>
-            <button class="cell" id="cell-7"></button>
-            <button class="cell" id="cell-8"></button>
-        </div>
-    </div>
-    <button id="reset-button">Reset Game</button>
-    <script>
-        // script.js
-        let board = ['', '', '', '', '', '', '', '', ''];
-        let currentPlayer = 'X';
-        let gameActive = true;
 
-        const turnDisplay = document.getElementById('turn');
-        const cells = document.querySelectorAll('.cell');
-        const resetButton = document.getElementById('reset-button');
+<h1>Tic Tac Toe (Advanced)</h1>
+<p id="status">Player X's Turn</p>
 
-        // Function to handle cell click
-        const handleClick = (index) => {
-            if (board[index] !== '' || !gameActive) return;
+<div id="game-board"></div>
 
-            board[index] = currentPlayer;
-            cells[index].textContent = currentPlayer;
+<button onclick="resetGame()">Reset Game</button>
 
-            if (checkWinner()) {
-                turnDisplay.textContent = `${currentPlayer} Wins!`;
-                gameActive = false;
-                return;
-            }
+<script>
+const boardElement = document.getElementById("game-board");
+const statusText = document.getElementById("status");
 
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-            turnDisplay.textContent = `${currentPlayer}'s Turn`;
-        };
+let board = Array(9).fill("");
+let currentPlayer = "X";
+let gameActive = true;
 
-        // Function to check if there is a winner
-        const checkWinner = () => {
-            const winningCombinations = [
-                [0, 1, 2],
-                [3, 4, 5],
-                [6, 7, 8],
-                [0, 3, 6],
-                [1, 4, 7],
-                [2, 5, 8],
-                [0, 4, 8],
-                [2, 4, 6]
-            ];
+const winPatterns = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+];
 
-            return winningCombinations.some(combination => {
-                const [a, b, c] = combination;
-                return board[a] && board[a] === board[b] && board[a] === board[c];
-            });
-        };
+// Create board
+for (let i = 0; i < 9; i++) {
+    const cell = document.createElement("button");
+    cell.classList.add("cell");
+    cell.addEventListener("click", () => handleMove(i, cell));
+    boardElement.appendChild(cell);
+}
 
-        // Function to reset the game
-        const resetGame = () => {
-            board = ['', '', '', '', '', '', '', '', ''];
-            currentPlayer = 'X';
-            gameActive = true;
-            turnDisplay.textContent = `${currentPlayer}'s Turn`;
+// Handle Player Move
+function handleMove(index, cell) {
+    if (!gameActive || board[index]) return;
 
-            cells.forEach(cell => {
-                cell.textContent = '';
-            });
-        };
+    board[index] = "X";
+    cell.textContent = "X";
 
-        // Add event listeners for cells
-        cells.forEach((cell, index) => {
-            cell.addEventListener('click', () => handleClick(index));
-        });
+    if (checkWinner("X")) return;
+    if (isDraw()) return;
 
-        // Add event listener for reset button
-        resetButton.addEventListener('click', resetGame);
-    </script>
+    currentPlayer = "O";
+    statusText.textContent = "Computer's Turn";
+    setTimeout(computerMove, 500);
+}
+
+// Computer AI Move
+function computerMove() {
+    let bestMove = minimax(board, "O").index;
+    board[bestMove] = "O";
+    boardElement.children[bestMove].textContent = "O";
+
+    checkWinner("O") || isDraw();
+    currentPlayer = "X";
+    statusText.textContent = "Player X's Turn";
+}
+
+// Winner Check
+function checkWinner(player) {
+    for (let pattern of winPatterns) {
+        if (pattern.every(i => board[i] === player)) {
+            pattern.forEach(i => boardElement.children[i].classList.add("win"));
+            statusText.textContent = `${player} Wins!`;
+            gameActive = false;
+            return true;
+        }
+    }
+    return false;
+}
+
+// Draw Check
+function isDraw() {
+    if (board.every(cell => cell !== "")) {
+        statusText.textContent = "Game Draw!";
+        gameActive = false;
+        return true;
+    }
+    return false;
+}
+
+// Minimax Algorithm (AI)
+function minimax(newBoard, player) {
+    const empty = newBoard
+        .map((v, i) => v === "" ? i : null)
+        .filter(v => v !== null);
+
+    if (checkWin(newBoard, "X")) return { score: -10 };
+    if (checkWin(newBoard, "O")) return { score: 10 };
+    if (empty.length === 0) return { score: 0 };
+
+    let moves = [];
+
+    for (let i of empty) {
+        let move = {};
+        move.index = i;
+        newBoard[i] = player;
+
+        move.score = minimax(newBoard, player === "O" ? "X" : "O").score;
+        newBoard[i] = "";
+
+        moves.push(move);
+    }
+
+    return player === "O"
+        ? moves.reduce((best, m) => m.score > best.score ? m : best)
+        : moves.reduce((best, m) => m.score < best.score ? m : best);
+}
+
+function checkWin(board, player) {
+    return winPatterns.some(p => p.every(i => board[i] === player));
+}
+
+// Reset Game
+function resetGame() {
+    board.fill("");
+    gameActive = true;
+    statusText.textContent = "Player X's Turn";
+    [...boardElement.children].forEach(c => {
+        c.textContent = "";
+        c.classList.remove("win");
+    });
+}
+</script>
 </body>
 </html>
